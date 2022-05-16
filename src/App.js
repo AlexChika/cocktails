@@ -10,9 +10,8 @@ function App() {
   // useEffect(() => {}, []);
   return (
     <BrowserRouter>
-      {/* <Header /> */}
       <Routes>
-        <Route path="/" element={<CockTailHome />} />
+        <Route path="/cocktails" element={<CockTailHome />} />
       </Routes>
     </BrowserRouter>
   );
