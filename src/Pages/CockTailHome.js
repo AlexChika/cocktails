@@ -93,17 +93,6 @@ const CockTailHome = () => {
     </Home>
   );
 };
-{
-  /*bg <a href="https://www.freepik.com/photos/cola">
-  Cola photo created by Racool_studio - www.freepik.com
-</a>; */
-}
-/* border: 1px solid grey; */
-{
-  /* <a href="https://www.flaticon.com/free-icons/cocktail" title="cocktail icons">
-  Cocktail icons created by Vitaly Gorbachev - Flaticon
-</a>; */
-}
 export default CockTailHome;
 const Home = styled.main`
   .hero {

@@ -1,13 +1,13 @@
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { useState, useEffect } from "react";
-import Header from "./Components/Header";
+// import { useState, useEffect } from "react";
+// import Header from "./Components/Header";
 import CockTailHome from "./Pages/CockTailHome";
 function App() {
-  const handleSubmit = (e) => {
-    e.preventDefault();
-  };
-  useEffect(() => {}, []);
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  // };
+  // useEffect(() => {}, []);
   return (
     <BrowserRouter>
       {/* <Header /> */}
