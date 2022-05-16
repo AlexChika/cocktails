@@ -135,7 +135,8 @@ const Home = styled.main`
     /* start of hero-tray styling */
     .hero-tray {
       left: 0%;
-      top: 80%;
+      top: calc(100% - 105px);
+
       width: 100%;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 80%));
@@ -185,7 +186,7 @@ const Home = styled.main`
   }
   .body {
     min-height: 100vh;
-    border: 2px solid red;
+    /* border: 2px solid red; */
     /* background-color: black; */
   }
   @media screen and (min-width: 546px) {
