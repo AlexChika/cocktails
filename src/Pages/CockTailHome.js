@@ -81,11 +81,6 @@ const CockTailHome = () => {
 
   useEffect(() => {
     if (!cocktailCon.current) return;
-    if (cocktailCon.current.getBoundingClientRect().height > 569) {
-      cocktailCon.current.style.overflow = "auto";
-    } else {
-      cocktailCon.current.style.overflow = "";
-    }
     const cocktails = cocktailCon.current.querySelectorAll(".cocktail");
     cocktails.forEach((cocktail, index) => {
       cocktail.firstChild.style.backgroundColor = color(random);
@@ -822,7 +817,8 @@ const Home = styled.main`
     }
     .cocktailCon {
       display: grid;
-      max-height: 570px;
+      max-height: 90vh;
+      overflow:auto;
       justify-content: center;
       grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
       grid-auto-rows: 130px;
