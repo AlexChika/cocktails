@@ -1,21 +1,104 @@
-import React from "react";
+import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
 import Header from "../Components/Header";
+import Loading from "../Components/loading";
+import Error from "../Components/errror";
 import { useGeneralContext } from "../utils/Context";
+import { getIngredientList, getCocktailsByIngredient } from "../utils/utils";
 const CockTailHome = () => {
   const context = useGeneralContext();
+  const cocktailCon = useRef(null);
+  const [refresh, setRefresh] = useState(1);
+  const [ingredients, setIngredients] = useState([]);
+  const [singleIngredient, setSingleIngredient] = useState("");
+  const [cocktails, setCocktails] = useState([]);
+  const [status, setStatus] = useState({
+    error: false,
+    loading: true,
+    success: false,
+  });
   console.log(context, "heyy");
-  let hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
-  function random() {
-    return Math.floor(Math.random() * hex.length);
+
+  const hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
+  function random(x) {
+    return Math.floor(Math.random() * x.length);
   }
   const color = (cb) => {
     let color = "#";
     for (let i = 0; i < 6; i++) {
-      color += hex[cb()];
+      color += hex[cb(hex)];
     }
     return color;
   };
+  const shuffleFunc = () => {
+    setSingleIngredient(ingredients[random(ingredients)]);
+  };
+  const refreshFunc = () => {
+    setRefresh(refresh + 1);
+  };
+  useEffect(() => {
+    let isApiSubscribed = true;
+    const caller = async () => {
+      setStatus({ ...status, error: false, loading: true, success: false });
+      const result = await getIngredientList();
+      if (isApiSubscribed) {
+        if (result.data) {
+          setIngredients(result.data.drinks);
+          setSingleIngredient(result.data.drinks[random(result.data.drinks)]);
+        } else {
+          setStatus({ ...status, error: true, loading: false, success: false });
+        }
+      }
+    };
+    caller();
+    return () => {
+      isApiSubscribed = false;
+    };
+  }, [refresh]);
+  useEffect(() => {
+    if (!singleIngredient) return;
+    let isApiSubscribed = true;
+    const caller = async () => {
+      setStatus({ error: false, loading: true, success: false });
+      const result = await getCocktailsByIngredient(
+        singleIngredient.strIngredient1
+      );
+      if (isApiSubscribed) {
+        if (result.data) {
+          setStatus({ ...status, error: false, loading: false, success: true });
+          setCocktails(result.data.drinks);
+          console.log("data:", result.data);
+        } else {
+          setStatus({ ...status, error: true, loading: false, success: false });
+        }
+      }
+    };
+    caller();
+    return () => {
+      isApiSubscribed = false;
+    };
+  }, [singleIngredient]);
+
+  useEffect(() => {
+    if (!cocktailCon.current) return;
+    if (cocktailCon.current.getBoundingClientRect().height > 600) {
+      cocktailCon.current.style.overflow = "auto";
+    } else {
+      cocktailCon.current.style.overflow = "";
+    }
+    const cocktails = cocktailCon.current.querySelectorAll(".cocktail");
+    cocktails.forEach((cocktail, index) => {
+      cocktail.firstChild.style.backgroundColor = color(random);
+      let i = index + 1;
+      if (i % 3 === 0) {
+        cocktail.style.gridRow = "span 3";
+      } else {
+        cocktail.style.gridRow = "span 2";
+      }
+    }); // return () => {
+    //   cleanup
+    // }
+  });
   return (
     <Home>
       <section className="hero r">
@@ -226,7 +309,7 @@ const CockTailHome = () => {
               </div>
             </div>
             <div className="aims falign">
-              <img src={require("../Assets/one.png")} alt="" />
+              <img src={require("../Assets/four.png")} alt="" />
               <div className="aims-body">
                 <h5>Multiple Api Consumption</h5>
                 <p>
@@ -237,7 +320,7 @@ const CockTailHome = () => {
             </div>
           </article>
         </div>
-        <div className="bottom grid two fcenter">
+        <div className="grid two fcenter">
           <article className="content falign">
             <div className="heading">
               <h1>Attribution and Summary</h1>
@@ -289,23 +372,167 @@ const CockTailHome = () => {
           </article>
         </div>
       </section>
-      <div className="drawer">
-        {hex.map((hex) => {
-          return (
-            <p
-              key={hex}
+      <div className="cocktails mb30">
+        <div className="heading pd10">
+          <h1 className="font1">
+            {Array.from("You Love Cocktails?").map((x, index) => (
+              <span
+                key={index}
+                style={{
+                  color: `${color(random)}`,
+                  fontWeight: "700",
+                }}
+              >
+                {x}
+              </span>
+            ))}
+          </h1>
+          <h4 className="font1">We Do Too...</h4>
+          <p className="mt10">
+            Here at{" "}
+            <span
               style={{
-                color: `${color(random)}`,
                 fontWeight: "700",
-                fontSize: "45px",
               }}
             >
-              {hex}
-            </p>
-          );
-        })}
+              Cocktails
+            </span>{" "}
+            We Provide You With Every Possible Coctail recipee and mixing
+            instructions.
+          </p>
+        </div>
+        <div className="infoBar pd10 mt30">
+          <div className="fcenter head">
+            <h4 className="ing pd10">
+              Ingredients:{" "}
+              <span>{singleIngredient?.strIngredient1 || "Waiting.."}</span>{" "}
+            </h4>
+            <button
+              onClick={shuffleFunc}
+              disabled={status.loading ? true : false}
+              className="btn"
+            >
+              Shuffle <i className="bi bi-shuffle"></i>
+            </button>
+          </div>
+          <p className="info">
+            {" "}
+            Cocktails With{" "}
+            <span style={{ color: "tomato", fontWeight: "700" }}>
+              {singleIngredient?.strIngredient1 || "Waiting.."}{" "}
+            </span>
+            Inside
+          </p>
+        </div>
+        <div>
+          {status.error && (
+            <Error>
+              <button
+                disabled={status.loading ? true : false}
+                onClick={refreshFunc}
+                className="btn"
+              >
+                Refresh
+              </button>
+            </Error>
+          )}
+          {status.loading && <Loading />}
+          {status.success && (
+            <section ref={cocktailCon} className="cocktailCon">
+              {cocktails.map((cocktail, index) => (
+                <div key={index} className="cocktail fcenter">
+                  <article className="content">
+                    <img
+                      className="fwh"
+                      src={cocktail.strDrinkThumb}
+                      alt={cocktail.strDrink}
+                    />
+                  </article>
+                </div>
+              ))}
+            </section>
+          )}
+        </div>
       </div>
-      <h1>hello people</h1>
+      <section className="cardCon">
+        <div className="heading">
+          <h1 className="mb10" style={{ color: "tomato" }}>
+            Search For Coctails
+          </h1>
+          <h2>
+            We are committed to helping you find the best recipees and mixing
+            instructions for your favourite cocktails.
+          </h2>
+        </div>
+        <div className="cards mt30">
+          <article className="card">
+            <figure>
+              <div className="cardImage">
+                <img
+                  className="fwh"
+                  src={require("../Assets/card1.png")}
+                  alt="cocktail glass"
+                />
+              </div>
+              <div className="cardDetails">
+                <p className="title"> Use Our Powerful Search</p>
+                <p className="text">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Maxime placeat labore nobis eveniet voluptatem voluptate vero
+                  ratione rem molestiae, sint quod assumenda quam, error
+                  perferendis dignissimos odio vitae perspiciatis rerum cumque
+                  laborum accusantium modi! Ea.
+                </p>
+                <button>Visit Our Search</button>
+              </div>
+            </figure>
+          </article>
+          <article className="card">
+            <figure>
+              <div className="cardImage">
+                <img
+                  className="fwh"
+                  src={require("../Assets/card2.png")}
+                  alt="cocktail glass"
+                />
+              </div>
+              <div className="cardDetails">
+                <p className="title"> Use Our Powerful Search</p>
+                <p className="text">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Maxime placeat labore nobis eveniet voluptatem voluptate vero
+                  ratione rem molestiae, sint quod assumenda quam, error
+                  perferendis dignissimos odio vitae perspiciatis rerum cumque
+                  laborum accusantium modi! Ea.
+                </p>
+                <button>Visit Our Search</button>
+              </div>
+            </figure>
+          </article>
+          <article className="card">
+            <figure>
+              <div className="cardImage">
+                <img
+                  className="fwh"
+                  src={require("../Assets/card3.png")}
+                  alt="cocktail glass"
+                />
+              </div>
+              <div className="cardDetails">
+                <p className="title"> Use Our Powerful Search</p>
+                <p className="text">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                  Maxime placeat labore nobis eveniet voluptatem voluptate vero
+                  ratione rem molestiae, sint quod assumenda quam, error
+                  perferendis dignissimos odio vitae perspiciatis rerum cumque
+                  laborum accusantium modi! Ea.
+                </p>
+                <button>Visit Our Search</button>
+              </div>
+            </figure>
+          </article>
+        </div>
+      </section>
     </Home>
   );
 };
@@ -544,6 +771,126 @@ const Home = styled.main`
       }
     }
   }
+  /* .  */
+  .cocktails {
+    .heading {
+      text-align: center;
+      h1 {
+        letter-spacing: 7px;
+        text-shadow: 1px 1px 1px grey;
+      }
+      h4 {
+        color: chocolate;
+      }
+      p {
+        font-style: italic;
+        font-size: 14px;
+      }
+    }
+    .infoBar {
+      width: 100%;
+      max-width: 768px;
+      margin: 0 auto;
+      margin-top: 30px;
+      .head {
+        flex-wrap: wrap;
+        justify-content: space-around;
+      }
+      .ing {
+        background: linear-gradient(to right, white, white);
+        color: grey;
+        span {
+          color: tomato;
+        }
+      }
+      .ing,
+      button {
+        padding: 10px 30px;
+        width: 280px;
+        margin-bottom: 20px;
+      }
+      button {
+        color: white;
+        background: skyblue;
+        border-radius: 20px;
+        font-size: 16px;
+      }
+      .info {
+        text-align: center;
+        font-style: italic;
+      }
+    }
+    .cocktailCon {
+      display: grid;
+      max-height: 100vh;
+      justify-content: center;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
+      grid-auto-rows: 130px;
+      gap: 0.7em;
+      .cocktail {
+        color: white;
+      }
+      .content {
+        width: 98%;
+        height: 99%;
+      }
+    }
+  }
+  .cardCon {
+    .heading {
+      margin-top: 50px;
+      text-align: center;
+      h2 {
+        margin: 0 auto;
+        line-height: 1.5em;
+        font-size: 16px;
+        color: grey;
+        max-width: 600px;
+      }
+    }
+    .cards {
+      margin-top: 30px;
+      display: grid;
+      justify-content: center;
+      grid-template-columns: repeat(1, minmax(280px, 350px));
+      grid-auto-rows: 500px;
+      row-gap: 1em;
+      .card {
+        height: 500px;
+        figure {
+          display: flex;
+          flex-direction: column;
+          width: 95%;
+          height: 100%;
+          margin: 0 auto;
+        }
+        div {
+          background: white;
+          height: 50%;
+          text-align: center;
+          .title {
+            font-size: 22px;
+            color: tomato;
+          }
+          .text {
+            color: grey;
+          }
+          button {
+            background: skyblue;
+            color: white;
+            border-radius: 20px;
+            padding: 10px 20px;
+          }
+        }
+        .cardDetails {
+          display: flex;
+          flex-direction: column;
+          justify-content: space-around;
+          padding: 10px;
+        }
+      }
+    }
+  }
   @media screen and (min-width: 546px) {
     .hero {
       .hero-heading {
@@ -613,6 +960,33 @@ const Home = styled.main`
         }
       }
     }
+    .cocktails {
+      .heading {
+        p {
+          font-size: 16px;
+        }
+      }
+    }
+    .cardCon {
+      .cards {
+        grid-template-columns: repeat(auto-fit, minmax(500px, 600px));
+        grid-template-rows: repeat(3, 280px);
+        .card {
+          height: 280px;
+          figure {
+            flex-direction: row;
+            width: 100%;
+          }
+          div {
+            width: 50%;
+            height: 100%;
+            .text {
+              font-size: 15px;
+            }
+          }
+        }
+      }
+    }
   }
   @media screen and (min-width: 650px) {
   }
@@ -624,6 +998,26 @@ const Home = styled.main`
         .content {
           width: 90%;
           height: 97%;
+        }
+      }
+    }
+    .cardCon {
+      .cards {
+        grid-template-columns: repeat(3, minmax(280px, 320px));
+        grid-template-rows: repeat(1, 500px);
+        .card {
+          height: 500px;
+          figure {
+            flex-direction: column;
+            width: 95%;
+          }
+          div {
+            width: 100%;
+            height: 50%;
+            .text {
+              font-size: 15px;
+            }
+          }
         }
       }
     }

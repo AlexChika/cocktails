@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // import { useState, useEffect } from "react";
 // import Header from "./Components/Header";
 import CockTailHome from "./Pages/CockTailHome";
+import Footer from "./Components/Footer";
 function App() {
   // const handleSubmit = (e) => {
   //   e.preventDefault();
@@ -10,10 +11,10 @@ function App() {
   // useEffect(() => {}, []);
   return (
     <BrowserRouter>
-      {/* <Header /> */}
       <Routes>
         <Route path="/" element={<CockTailHome />} />
       </Routes>
+      <Footer />
     </BrowserRouter>
   );
 }
