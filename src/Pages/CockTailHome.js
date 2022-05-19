@@ -81,7 +81,7 @@ const CockTailHome = () => {
 
   useEffect(() => {
     if (!cocktailCon.current) return;
-    if (cocktailCon.current.getBoundingClientRect().height > 600) {
+    if (cocktailCon.current.getBoundingClientRect().height > 569) {
       cocktailCon.current.style.overflow = "auto";
     } else {
       cocktailCon.current.style.overflow = "";
@@ -816,13 +816,13 @@ const Home = styled.main`
         font-size: 16px;
       }
       .info {
-        text-align: center;
+        text-align: center;y
         font-style: italic;
       }
     }
     .cocktailCon {
       display: grid;
-      max-height: 100vh;
+      max-height: 570px;
       justify-content: center;
       grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
       grid-auto-rows: 130px;
