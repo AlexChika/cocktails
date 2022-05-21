@@ -449,7 +449,7 @@ const CockTailHome = () => {
           )}
         </div>
       </div>
-      <section className="cardCon">
+      <section className="cardCon mb30">
         <div className="heading">
           <h1 className="mb10" style={{ color: "tomato" }}>
             Search For Coctails
@@ -811,14 +811,14 @@ const Home = styled.main`
         font-size: 16px;
       }
       .info {
-        text-align: center;y
+        text-align: center;
         font-style: italic;
       }
     }
     .cocktailCon {
       display: grid;
       max-height: 90vh;
-      overflow:auto;
+      overflow: auto;
       justify-content: center;
       grid-template-columns: repeat(auto-fit, minmax(280px, 320px));
       grid-auto-rows: 130px;
