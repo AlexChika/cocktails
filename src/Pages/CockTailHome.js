@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 import Header from "../Components/Header";
 import Loading from "../Components/loading";
 import Error from "../Components/errror";
@@ -7,6 +8,7 @@ import { useGeneralContext } from "../utils/Context";
 import { getIngredientList, getCocktailsByIngredient } from "../utils/utils";
 const CockTailHome = () => {
   const context = useGeneralContext();
+  const navigate = useNavigate();
   const cocktailCon = useRef(null);
   const [refresh, setRefresh] = useState(1);
   const [ingredients, setIngredients] = useState([]);
@@ -97,7 +99,7 @@ const CockTailHome = () => {
   return (
     <Home>
       <section className="hero r">
-        <Header headerBackground={` rgba(255, 255, 255, 0.1)`} />
+        <Header headerBackground={` background : rgba(255, 255, 255, 0.1)`} />
         <div className="hero-heading bgtrans abs fcenter">
           <img
             className="abs"
@@ -452,7 +454,7 @@ const CockTailHome = () => {
       <section className="cardCon mb30">
         <div className="heading">
           <h1 className="mb10" style={{ color: "tomato" }}>
-            Search For Coctails
+            Search For More Coctails
           </h1>
           <h2>
             We are committed to helping you find the best recipees and mixing
@@ -478,7 +480,9 @@ const CockTailHome = () => {
                   perferendis dignissimos odio vitae perspiciatis rerum cumque
                   laborum accusantium modi! Ea.
                 </p>
-                <button>Visit Our Search</button>
+                <button onClick={() => navigate("/cocktail")}>
+                  Visit Our Search
+                </button>
               </div>
             </figure>
           </article>
@@ -500,7 +504,9 @@ const CockTailHome = () => {
                   perferendis dignissimos odio vitae perspiciatis rerum cumque
                   laborum accusantium modi! Ea.
                 </p>
-                <button>Visit Our Search</button>
+                <button onClick={() => navigate("/cocktail")}>
+                  Visit Our Search
+                </button>
               </div>
             </figure>
           </article>
@@ -522,7 +528,9 @@ const CockTailHome = () => {
                   perferendis dignissimos odio vitae perspiciatis rerum cumque
                   laborum accusantium modi! Ea.
                 </p>
-                <button>Visit Our Search</button>
+                <button onClick={() => navigate("/cocktail")}>
+                  Visit Our Search
+                </button>
               </div>
             </figure>
           </article>

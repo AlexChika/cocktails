@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { bg } from "../utils/utils";
 const Footer = () => {
   return (
     <FooterWrap>
@@ -78,21 +79,20 @@ const Footer = () => {
 
 export default Footer;
 const FooterWrap = styled.footer`
-  background: #fefcf7;
+  ${bg}
   padding: 20px;
   .headerWrapper {
-  flex-wrap:wrap;
-    /* flex-direction: column; */
-   justify-content:space-around;
+    flex-wrap: wrap;
+    justify-content: space-around;
     .col {
-      margin:0 10px;
-      margin-bottom:20px;
+      margin: 0 10px;
+      margin-bottom: 20px;
       flex: 1;
       min-height: 100px;
-      min-width:220px;
-      max-width:320px;
-      background:#fcf5e8;
-      padding:5px;
+      min-width: 220px;
+      max-width: 320px;
+      background: rgba(128, 128, 128, 0.05);
+      padding: 10px;
     }
   }
   h5 {
@@ -101,9 +101,9 @@ const FooterWrap = styled.footer`
   }
   .cocktail {
     .socialIcons {
-      span{
-        margin:0 4px;
-        color:skyblue;
+      span {
+        margin: 0 4px;
+        color: skyblue;
       }
     }
     .logo-con {
@@ -128,7 +128,7 @@ const FooterWrap = styled.footer`
   .contact,
   .company {
     flex-direction: column;
-    /* justify-content: space-around; */
+    justify-content: space-around;
   }
   .footerFooter {
     flex-wrap: wrap;
@@ -139,9 +139,6 @@ const FooterWrap = styled.footer`
     border-top: 1px solid grey;
   }
   @media screen and (min-width: 546px) {
-    .headerWrapper {
-      /* flex-wrap:wrap;
-      flex-direction: row; */
     .footerFooter {
       justify-content: space-between;
     }
@@ -149,7 +146,5 @@ const FooterWrap = styled.footer`
   @media screen and (min-width: 1024px) {
     width: 90%;
     margin: 0 auto;
-    .headerWrapper {
-    }
   }
 `;

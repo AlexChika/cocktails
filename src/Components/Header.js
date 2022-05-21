@@ -47,9 +47,10 @@ const Nav = styled.nav`
   /* classes */
   .active {
     transition: all 0.25s linear;
-    color: white;
+    color: skyblue;
     position: relative;
-    border: 1px solid white !important;
+    border: 1px solid skyblue !important;
+    font-weight: 700 !important;
   }
   .logo-con {
     padding: 5px;
@@ -122,9 +123,7 @@ const Nav = styled.nav`
       }
     }
   }
-  /* background-color: #ffeff2; */
-  /* background: rgba(255, 255, 255, 0.1); */
-  background: ${(props) => props.bg};
+  ${(props) => props.bg};
   display: flex;
   flex-direction: column;
   box-shadow: 0px 2px 5px #99737a;
