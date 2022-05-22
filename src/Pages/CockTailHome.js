@@ -4,10 +4,19 @@ import { useNavigate } from "react-router-dom";
 import Header from "../Components/Header";
 import Loading from "../Components/loading";
 import Error from "../Components/errror";
-import { useGeneralContext } from "../utils/Context";
 import { getIngredientList, getCocktailsByIngredient } from "../utils/utils";
+const hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
+function random(x = hex) {
+  return Math.floor(Math.random() * x.length);
+}
+export const color = (cb = random) => {
+  let color = "#";
+  for (let i = 0; i < 6; i++) {
+    color += hex[cb(hex)];
+  }
+  return color;
+};
 const CockTailHome = () => {
-  const context = useGeneralContext();
   const navigate = useNavigate();
   const cocktailCon = useRef(null);
   const [refresh, setRefresh] = useState(1);
@@ -19,19 +28,6 @@ const CockTailHome = () => {
     loading: true,
     success: false,
   });
-  console.log(context, "heyy");
-
-  const hex = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "A", "B", "C", "D", "E", "F"];
-  function random(x) {
-    return Math.floor(Math.random() * x.length);
-  }
-  const color = (cb) => {
-    let color = "#";
-    for (let i = 0; i < 6; i++) {
-      color += hex[cb(hex)];
-    }
-    return color;
-  };
   const shuffleFunc = () => {
     setSingleIngredient(ingredients[random(ingredients)]);
   };

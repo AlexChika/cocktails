@@ -1,18 +1,18 @@
 import "./App.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import CockTailHome from "./Pages/CockTailHome";
 import Footer from "./Components/Footer";
 import Cocktail from "./Pages/Cocktail";
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/" element={<CockTailHome />} />
         <Route path="cocktail" element={<Cocktail />}></Route>
         <Route path="*" element={<div>Error Page</div>} />
       </Routes>
       <Footer />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
