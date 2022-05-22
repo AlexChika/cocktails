@@ -52,11 +52,32 @@ const reducer = (state, action) => {
       tag: { ...state.tag, list: selected },
     };
   }
+  if (action.type === "SELECTED_INDIVIDUAL_COCKTAIL") {
+    const selected = action.payload;
+    return {
+      ...state,
+      tag: { ...state.tag, name: selected },
+    };
+  }
   if (action.type === "SET_LIST_BUTTONS") {
     const list = action.payload;
     return {
       ...state,
       list: [...list],
+    };
+  }
+  if (action.type === "SET_SEARCHED_RESULTS_FROM_FILTER") {
+    const searchedResults = action.payload;
+    return {
+      ...state,
+      searchedResult: [...searchedResults],
+    };
+  }
+  if (action.type === "SET_INDIVIDUAL_COCKTAIL") {
+    const cocktail = action.payload;
+    return {
+      ...state,
+      individualCocktail: { ...cocktail },
     };
   }
 

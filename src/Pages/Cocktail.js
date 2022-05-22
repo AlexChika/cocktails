@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useGeneralContext } from "../utils/Context";
 import {
   getIngredientList,
@@ -13,45 +13,43 @@ import { color } from "./CockTailHome";
 import Header from "../Components/Header";
 import Error from "../Components/errror";
 import Loading from "../Components/loading";
-// const list = [
-//   "hello",
-//   "how",
-//   "do you",
-//   "do today",
-//   "hope you are",
-//   "alright",
-//   "as for me",
-//   " I am fine",
-//   "say hi",
-//   "to mummy",
-//   "for me pls",
-//   "hello sir",
-//   "how is",
-//   "lol you",
-//   "for today",
-//   "hope you are my",
-//   "alright sir",
-//   "as for them",
-//   " I am cool",
-//   "say him",
-//   "let mummy",
-//   "for me tho",
-// ];
 const Cocktail = () => {
+  const navigate = useNavigate();
   const { appState, dispatch } = useGeneralContext();
   const { categorySelected, tag, list } = appState;
+  const [btnList, setBtnList] = useState(list);
   const [status, setStatus] = useState({
     error: false,
     loading: false,
     success: false,
   });
+  const [filter, setFilter] = useState("");
   const [btnClicked, setBtnClicked] = useState(false);
   const [property, setProperty] = useState("");
+  const handleFilterBtnList = (filter) => {
+    const newList = list
+      .filter((item) => {
+        if (
+          item[property]
+            .trim()
+            .toLowerCase()
+            .includes(filter.trim().toLowerCase())
+        ) {
+          return item;
+        }
+        if (!filter) return true;
+      })
+      .sort((a, b) => {
+        return a[property - b[property]];
+      });
+    setBtnList(newList);
+  };
   const categorySelector = (selected) => {
     dispatch({ type: "SELECTED_TOP_LEVEL_CATEGORY", payload: selected });
   };
   const listBtnSelector = (selected) => {
     dispatch({ type: "SELECTED_FROM_LIST", payload: selected });
+    navigate("/cocktail");
     console.log("i was clicked");
   };
   useEffect(() => {
@@ -61,7 +59,6 @@ const Cocktail = () => {
     if (categorySelected.categories) {
       clicked = true;
       getter = getCategoryList;
-      console.log(getter);
     }
     if (categorySelected.glass) {
       clicked = true;
@@ -82,6 +79,7 @@ const Cocktail = () => {
       if (isApiSubscribed) {
         if (result.data) {
           dispatch({ type: "SET_LIST_BUTTONS", payload: result.data.drinks });
+          setBtnList(result.data.drinks);
           setStatus({
             ...status,
             error: false,
@@ -165,12 +163,32 @@ const Cocktail = () => {
         {status.success && (
           <div>
             <h3 className="heading">Cocktails From {tag.category}</h3>
-            <p className="mb20">
+            <p className="mb10">
               <i style={{ color: color() }} className="bi bi-info-lg"></i>
-              select from any of the buttons
+              Use search to filter button list
             </p>
+            <form className="form bgtrans1">
+              <div className="formControl f">
+                <input
+                  onChange={(e) => {
+                    setFilter(e.target.value);
+                    handleFilterBtnList(e.target.value);
+                  }}
+                  value={filter}
+                  placeholder="Filter Out The Buttons"
+                  type="text"
+                />
+                <button type="submit">
+                  <i className="bi bi-search"></i>
+                </button>
+              </div>
+              <p>
+                <i style={{ color: color() }} className="bi bi-info-lg"></i>
+                select from any of the buttons
+              </p>
+            </form>
             <div className="listBtns f">
-              {list.map((item, index) => {
+              {btnList.map((item, index) => {
                 return (
                   <button
                     onClick={() =>
@@ -195,7 +213,6 @@ const Cocktail = () => {
             </div>
           </div>
         )}
-        <NavLink to="/cocktail/search=1234">see the other page</NavLink>
       </section>
       <Outlet />
     </CocktailWrapper>
@@ -235,8 +252,8 @@ const CocktailWrapper = styled.main`
         border-left: 1px solid skyblue;
       }
       span:nth-of-type(4) {
-        color: greenyellow;
-        border-left: 1px solid greenyellow;
+        color: green;
+        border-left: 1px solid green;
       }
     }
     .category {
@@ -268,6 +285,7 @@ const CocktailWrapper = styled.main`
     .listBtns {
       max-width: 500px;
       margin: 0 auto;
+      margin-bottom: 20px;
       justify-content: space-around;
       flex-wrap: wrap;
       button {
@@ -288,6 +306,27 @@ const CocktailWrapper = styled.main`
       font-style: italic;
       font-size: 14px;
       text-align: center;
+    }
+    .form {
+      max-width: 500px;
+      margin: 0 auto;
+      margin-bottom: 20px;
+      overflow: hidden;
+      .formControl {
+        border: 2px solid white;
+        border-radius: 16px;
+        padding: 5px 0px;
+        input {
+          padding: 7px;
+          flex: 0.8;
+          border-right: 2px solid white;
+        }
+        button {
+          padding: 7px;
+          flex: 0.2;
+          font-size: 20px;
+        }
+      }
     }
   }
 `;

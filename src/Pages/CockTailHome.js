@@ -65,7 +65,6 @@ const CockTailHome = () => {
         if (result.data) {
           setStatus({ ...status, error: false, loading: false, success: true });
           setCocktails(result.data.drinks);
-          console.log("data:", result.data);
         } else {
           setStatus({ ...status, error: true, loading: false, success: false });
         }
