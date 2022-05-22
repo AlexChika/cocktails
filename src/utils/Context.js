@@ -4,6 +4,7 @@ const AppContext = React.createContext();
 const reducer = (state, action) => {
   if (action.type === "SELECTED_TOP_LEVEL_CATEGORY") {
     const selected = action.payload;
+    if (state.tag.category === selected) return state;
     let newCategory;
     if (selected === "Categories") {
       newCategory = {
@@ -40,12 +41,29 @@ const reducer = (state, action) => {
     return {
       ...state,
       categorySelected: { ...newCategory },
-      category: { ...state.category, category: selected },
+      tag: { ...state.tag, category: selected },
     };
   }
+  if (action.type === "SELECTED_FROM_LIST") {
+    const selected = action.payload;
+    if (state.tag.list === selected) return state;
+    return {
+      ...state,
+      tag: { ...state.tag, list: selected },
+    };
+  }
+  if (action.type === "SET_LIST_BUTTONS") {
+    const list = action.payload;
+    return {
+      ...state,
+      list: [...list],
+    };
+  }
+
+  return state;
 };
 const initialState = {
-  category: {
+  tag: {
     cocktail: "Cocktail",
     category: "",
     list: "",
