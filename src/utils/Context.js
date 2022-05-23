@@ -49,7 +49,7 @@ const reducer = (state, action) => {
     if (state.tag.list === selected) return state;
     return {
       ...state,
-      tag: { ...state.tag, list: selected },
+      tag: { ...state.tag, list: selected, name: "" },
     };
   }
   if (action.type === "SELECTED_INDIVIDUAL_COCKTAIL") {
