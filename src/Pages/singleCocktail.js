@@ -24,6 +24,10 @@ const SingleCocktail = () => {
       if (isApiSubscribed) {
         if (result.data) {
           dispatch({
+            type: "SELECTED_INDIVIDUAL_COCKTAIL",
+            payload: result.data.drinks[0].strDrink,
+          });
+          dispatch({
             type: "SET_INDIVIDUAL_COCKTAIL",
             payload: result.data.drinks[0],
           });

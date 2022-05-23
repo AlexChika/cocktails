@@ -38,7 +38,8 @@ body {
 .error {
   text-align: center;
 }
-.error button {
+.error button,
+.btn {
   display: inline-block;
   background-color: grey;
   color: white;

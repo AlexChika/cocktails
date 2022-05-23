@@ -5,6 +5,7 @@ import Footer from "./Components/Footer";
 import Cocktail from "./Pages/Cocktail";
 import SearchResult from "./Pages/searchResult";
 import SingleCocktail from "./Pages/singleCocktail";
+import ErrorPage from "./Pages/ErrorPage";
 function App() {
   return (
     <HashRouter>
@@ -14,7 +15,7 @@ function App() {
           <Route index element={<SearchResult />} />
           <Route path=":id" element={<SingleCocktail />} />
         </Route>
-        <Route path="*" element={<div>Error Page</div>} />
+        <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />
     </HashRouter>

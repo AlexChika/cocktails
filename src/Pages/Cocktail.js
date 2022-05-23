@@ -228,7 +228,9 @@ const CocktailWrapper = styled.main`
     text-shadow: 1px 0px 2px grey;
   }
   .header {
+    position: relative;
     .tag {
+      positon: fixed;
       padding: 5px;
       max-width: 600px;
       width: 95%;
