@@ -1,6 +1,6 @@
 const navigation = [
   {
-    url: "/home",
+    url: "/cocktails",
     name: "Home",
   },
   {
