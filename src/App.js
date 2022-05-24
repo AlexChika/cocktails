@@ -5,6 +5,8 @@ import Footer from "./Components/Footer";
 import Cocktail from "./Pages/Cocktail";
 import SearchResult from "./Pages/searchResult";
 import SingleCocktail from "./Pages/singleCocktail";
+import About from "./Pages/About";
+import Contact from "./Pages/Contact";
 import ErrorPage from "./Pages/ErrorPage";
 function App() {
   return (
@@ -15,6 +17,8 @@ function App() {
           <Route index element={<SearchResult />} />
           <Route path=":id" element={<SingleCocktail />} />
         </Route>
+        <Route path="about" element={<About />} />
+        <Route path="contact" element={<Contact />} />
         <Route path="*" element={<ErrorPage />} />
       </Routes>
       <Footer />

@@ -57,7 +57,8 @@ const Footer = () => {
         <div className="contact col f">
           <h3>Contact</h3>
           <h5>
-            ZD45, Levino street, Behind Melvino Garden aso see, mararraba, Abuja
+            ZD45, Behind Melvino Garden aso see, Melvino street, mararraba,
+            Abuja
           </h5>
           <h5>Whatsapp</h5>
           <h5>Facebook</h5>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useContext, useState, useReducer } from "react";
+import { useContext, useReducer } from "react";
 const AppContext = React.createContext();
 const reducer = (state, action) => {
   if (action.type === "SELECTED_TOP_LEVEL_CATEGORY") {
@@ -102,15 +102,9 @@ const initialState = {
 };
 const GeneralContext = ({ children }) => {
   const [appState, dispatch] = useReducer(reducer, initialState);
-  const [filterWord, setFilterWord] = useState("");
-  const [searchWord, setSearchWord] = useState("");
   return (
     <AppContext.Provider
       value={{
-        filterWord,
-        setFilterWord,
-        searchWord,
-        setSearchWord,
         appState,
         dispatch,
       }}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import styled from "styled-components";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useGeneralContext } from "../utils/Context";
@@ -23,6 +23,7 @@ const Cocktail = () => {
     loading: false,
     success: false,
   });
+  const tagCon = useRef(null);
   const [filter, setFilter] = useState("");
   const [btnClicked, setBtnClicked] = useState(false);
   const [property, setProperty] = useState("");
@@ -50,7 +51,6 @@ const Cocktail = () => {
   const listBtnSelector = (selected) => {
     dispatch({ type: "SELECTED_FROM_LIST", payload: selected });
     navigate("/cocktail");
-    console.log("i was clicked");
   };
   useEffect(() => {
     let isApiSubscribed = true;
@@ -74,6 +74,7 @@ const Cocktail = () => {
     }
     if (!clicked) return;
     const caller = async () => {
+      setBtnClicked(true);
       setStatus({ ...status, error: false, loading: true, success: false });
       const result = await getter();
       if (isApiSubscribed) {
@@ -86,8 +87,10 @@ const Cocktail = () => {
             loading: false,
             success: true,
           });
+          setBtnClicked(false);
         } else {
           setStatus({ ...status, error: true, loading: false, success: false });
+          setBtnClicked(false);
         }
       }
     };
@@ -110,11 +113,25 @@ const Cocktail = () => {
       setProperty("strAlcoholic");
     }
   }, [categorySelected]);
+  useEffect(() => {
+    const fixTagConToTop = () => {
+      if (window.scrollY >= 62) {
+        tagCon.current.style.position = "fixed";
+        tagCon.current.style.top = "5px";
+      } else {
+        tagCon.current.style.position = "unset";
+      }
+    };
+    window.addEventListener("scroll", fixTagConToTop);
+    return () => {
+      window.removeEventListener("scroll", fixTagConToTop);
+    };
+  });
   return (
     <CocktailWrapper>
       <Header headerBackground={bg} />
       <section className="header mb30 mt10">
-        <div className="tag bgtrans1 mb20">
+        <div ref={tagCon} className="tag bgtrans1 mb20">
           <h3>
             <i style={{ color: color() }} className="bi bi-info-lg"></i>
             {Object.values(tag).map((value, index) => (
@@ -228,9 +245,9 @@ const CocktailWrapper = styled.main`
     text-shadow: 1px 0px 2px grey;
   }
   .header {
-    position: relative;
     .tag {
-      positon: fixed;
+      transition: all 0.3s linear;
+      z-index: 2;
       padding: 5px;
       max-width: 600px;
       width: 95%;

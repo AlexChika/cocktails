@@ -987,10 +987,6 @@ const Home = styled.main`
       }
     }
   }
-  @media screen and (min-width: 650px) {
-  }
-  @media screen and (min-width: 768px) {
-  }
   @media screen and (min-width: 900px) {
     .body {
       .side {

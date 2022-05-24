@@ -38,7 +38,6 @@ const SingleCocktail = () => {
       const result = await getSingleCocktail(id);
       if (isApiSubscribed) {
         if (result.data) {
-          console.log(result.data.drinks[0]);
           dispatch({
             type: "SELECTED_INDIVIDUAL_COCKTAIL",
             payload: result.data.drinks[0].strDrink,
@@ -169,11 +168,9 @@ const SingleCocktailWrapper = styled.main`
         color: white;
       }
     }
-
     article:last-of-type {
       overflow: auto;
       height: 450px;
-
       .head {
         text-align: center;
 
@@ -204,7 +201,7 @@ const SingleCocktailWrapper = styled.main`
         }
       }
       .ingredients {
-        padding-left: 30px;
+        margin-left: 30px;
         h1 {
           letter-spacing: 3px;
           font-size: 2rem;
@@ -220,8 +217,7 @@ const SingleCocktailWrapper = styled.main`
         }
       }
       .recipe {
-        padding-left: 30px;
-
+        margin-left: 30px;
         h1 {
           letter-spacing: 3px;
           font-size: 2rem;

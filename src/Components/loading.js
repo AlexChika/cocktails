@@ -5,8 +5,8 @@ const Loading = () => {
     <div className="loading mt30" style={{ color: "grey" }}>
       <div className="spinner">
         <BallTriangle
-          heigth="100"
-          width="100"
+          heigth="80"
+          width="80"
           color="grey"
           ariaLabel="loading-indicator"
         />
