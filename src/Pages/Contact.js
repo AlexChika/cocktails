@@ -10,7 +10,7 @@ const Contact = () => {
       <Header headerBackground={bg} />
       <div className="tag mt10 falign">
         <h2>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/home">Home</NavLink>
         </h2>
         <h4>{">"}</h4>
         <h3>Contact</h3>

@@ -9,7 +9,7 @@ const About = () => {
       <Header headerBackground={bg} />
       <div className="tag  mt10 falign">
         <h2>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/home">Home</NavLink>
         </h2>
         <h4>{">"}</h4>
         <h3>About</h3>
@@ -25,7 +25,7 @@ const About = () => {
           </p>
 
           <button>
-            <NavLink to="/">VISIT COCKTAIL</NavLink>
+            <NavLink to="/home">VISIT COCKTAIL</NavLink>
           </button>
         </section>
         <section className="sideB">
